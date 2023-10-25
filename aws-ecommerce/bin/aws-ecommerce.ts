@@ -7,7 +7,7 @@ import { ApiStack } from '../lib/api-stack';
 const app = new cdk.App();
 
 const env: cdk.Environment = {
-    account: "946835467386",
+    account: "828000338113",
     region: "us-east-1"
 }
 
