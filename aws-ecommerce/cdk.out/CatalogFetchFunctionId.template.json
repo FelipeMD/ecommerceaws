@@ -1,0 +1,128 @@
+{
+ "Resources": {
+  "CatalogFetchFunctionIdServiceRole02D72919": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CatalogFetchFunctionId/CatalogFetchFunctionId/ServiceRole/Resource"
+   }
+  },
+  "CatalogFetchFunctionId9B7756F3": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-828000338113-us-east-1",
+     "S3Key": "ade566ee7d80633debb69b06966b55a06a5fa7b3386630cacf980c48f0eda32e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "CatalogFetchFunction",
+    "Handler": "index.handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "CatalogFetchFunctionIdServiceRole02D72919",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 19
+   },
+   "DependsOn": [
+    "CatalogFetchFunctionIdServiceRole02D72919"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CatalogFetchFunctionId/CatalogFetchFunctionId/Resource",
+    "aws:asset:path": "asset.ade566ee7d80633debb69b06966b55a06a5fa7b3386630cacf980c48f0eda32e",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWNyw6CQAxFv4V9qYAbt2Li0gV+AClDJeUxk9AZXRD+3QE0aXLS17kF5lmBWUIfTU07pKM0uDw9mQHiqF5GmpqWauta7hUfO+7BGi/OgtCES+VGhtvLblxBzzWpsle8bog9lsEM7EtShsOG8frvWKFidWE2DPtDjO7Edrvwt1hhS8deT+/8grGKpFeRdA7Wy8RYHfwCpGSbEMoAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "CatalogFetchFunctionId/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855": {
+   "Value": {
+    "Fn::GetAtt": [
+     "CatalogFetchFunctionId9B7756F3",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "CatalogFetchFunctionId:ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

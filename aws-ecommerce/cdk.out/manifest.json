@@ -1,0 +1,242 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "CatalogFetchFunctionId.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CatalogFetchFunctionId.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CatalogFetchFunctionId": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://828000338113/us-east-1",
+      "properties": {
+        "templateFile": "CatalogFetchFunctionId.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "cost": "aws-ecommerce",
+          "team": "Felipe Souza"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-deploy-role-828000338113-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-cfn-exec-role-828000338113-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-828000338113-us-east-1/3371634fd39595b1ad1892e2bd9fdbf8493cf0e5bb5bceaac8659abf43e30fb0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CatalogFetchFunctionId.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-lookup-role-828000338113-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CatalogFetchFunctionId.assets"
+      ],
+      "metadata": {
+        "/CatalogFetchFunctionId": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "cost",
+                "Value": "aws-ecommerce"
+              },
+              {
+                "Key": "team",
+                "Value": "Felipe Souza"
+              }
+            ]
+          }
+        ],
+        "/CatalogFetchFunctionId/CatalogFetchFunctionId/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogFetchFunctionIdServiceRole02D72919"
+          }
+        ],
+        "/CatalogFetchFunctionId/CatalogFetchFunctionId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogFetchFunctionId9B7756F3"
+          }
+        ],
+        "/CatalogFetchFunctionId/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CatalogFetchFunctionId/Exports/Output{\"Fn::GetAtt\":[\"CatalogFetchFunctionId9B7756F3\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855"
+          }
+        ],
+        "/CatalogFetchFunctionId/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CatalogFetchFunctionId/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CatalogFetchFunctionId"
+    },
+    "ApiId.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "ApiId.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "ApiId": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://828000338113/us-east-1",
+      "properties": {
+        "templateFile": "ApiId.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "cost": "aws-ecommerce",
+          "team": "Felipe Souza"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-deploy-role-828000338113-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-cfn-exec-role-828000338113-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-828000338113-us-east-1/8fbf59d95e5cfd892725cfbbaa776f5a691980f619b6936d3e28ad04a2a6a58c.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "ApiId.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::828000338113:role/cdk-hnb659fds-lookup-role-828000338113-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CatalogFetchFunctionId",
+        "ApiId.assets"
+      ],
+      "metadata": {
+        "/ApiId": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "cost",
+                "Value": "aws-ecommerce"
+              },
+              {
+                "Key": "team",
+                "Value": "Felipe Souza"
+              }
+            ]
+          }
+        ],
+        "/ApiId/ApiLogsId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiLogsId8E941697"
+          }
+        ],
+        "/ApiId/ApiId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiId3E3142C2"
+          }
+        ],
+        "/ApiId/ApiId/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdCloudWatchRole5887D3C2"
+          }
+        ],
+        "/ApiId/ApiId/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdAccount6C4C4546"
+          }
+        ],
+        "/ApiId/ApiId/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdDeploymentB8558FDA23d21aa610fae0794a6be15b27e346c3"
+          }
+        ],
+        "/ApiId/ApiId/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdDeploymentStageprodF1084D67"
+          }
+        ],
+        "/ApiId/ApiId/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdEndpoint2153A9CE"
+          }
+        ],
+        "/ApiId/ApiId/Default/catalog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdcatalog62A5C6C0"
+          }
+        ],
+        "/ApiId/ApiId/Default/catalog/GET/ApiPermission.ApiId2FBA6B34.GET..catalog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdcatalogGETApiPermissionApiId2FBA6B34GETcatalogE30CCE79"
+          }
+        ],
+        "/ApiId/ApiId/Default/catalog/GET/ApiPermission.Test.ApiId2FBA6B34.GET..catalog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdcatalogGETApiPermissionTestApiId2FBA6B34GETcatalog2044AF57"
+          }
+        ],
+        "/ApiId/ApiId/Default/catalog/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiIdcatalogGET67F5648D"
+          }
+        ],
+        "/ApiId/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/ApiId/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/ApiId/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "ApiId"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

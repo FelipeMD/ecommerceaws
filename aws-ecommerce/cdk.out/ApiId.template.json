@@ -1,0 +1,293 @@
+{
+ "Resources": {
+  "ApiLogsId8E941697": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiLogsId/Resource"
+   }
+  },
+  "ApiId3E3142C2": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Api"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Resource"
+   }
+  },
+  "ApiIdCloudWatchRole5887D3C2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/CloudWatchRole/Resource"
+   }
+  },
+  "ApiIdAccount6C4C4546": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ApiIdCloudWatchRole5887D3C2",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ApiId3E3142C2"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Account"
+   }
+  },
+  "ApiIdDeploymentB8558FDA23d21aa610fae0794a6be15b27e346c3": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "ApiId3E3142C2"
+    }
+   },
+   "DependsOn": [
+    "ApiIdcatalogGET67F5648D",
+    "ApiIdcatalog62A5C6C0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Deployment/Resource"
+   }
+  },
+  "ApiIdDeploymentStageprodF1084D67": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "ApiLogsId8E941697",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "ApiIdDeploymentB8558FDA23d21aa610fae0794a6be15b27e346c3"
+    },
+    "RestApiId": {
+     "Ref": "ApiId3E3142C2"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "ApiIdAccount6C4C4546"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/DeploymentStage.prod/Resource"
+   }
+  },
+  "ApiIdcatalog62A5C6C0": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiId3E3142C2",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "catalog",
+    "RestApiId": {
+     "Ref": "ApiId3E3142C2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Default/catalog/Resource"
+   }
+  },
+  "ApiIdcatalogGETApiPermissionApiId2FBA6B34GETcatalogE30CCE79": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "CatalogFetchFunctionId:ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:828000338113:",
+       {
+        "Ref": "ApiId3E3142C2"
+       },
+       "/",
+       {
+        "Ref": "ApiIdDeploymentStageprodF1084D67"
+       },
+       "/GET/catalog"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Default/catalog/GET/ApiPermission.ApiId2FBA6B34.GET..catalog"
+   }
+  },
+  "ApiIdcatalogGETApiPermissionTestApiId2FBA6B34GETcatalog2044AF57": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "CatalogFetchFunctionId:ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:828000338113:",
+       {
+        "Ref": "ApiId3E3142C2"
+       },
+       "/test-invoke-stage/GET/catalog"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Default/catalog/GET/ApiPermission.Test.ApiId2FBA6B34.GET..catalog"
+   }
+  },
+  "ApiIdcatalogGET67F5648D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "CatalogFetchFunctionId:ExportsOutputFnGetAttCatalogFetchFunctionId9B7756F3Arn3DB77855"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApiIdcatalog62A5C6C0"
+    },
+    "RestApiId": {
+     "Ref": "ApiId3E3142C2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/ApiId/Default/catalog/GET/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WO0U7DMAxFv2Xvqbf1idcNJF5AoPEBk5ea4i2poyZhmqr8+1wFRJEs+dwr+9otbDctbFZ4jY3tLo3jE0wfCe3FqHWcnPQRphfpn0fJwTx+Dr9cDAbuMdEVbzAdKKZd4HlggTtrJQ/JPFFwcvOkqO5C6aWeZq+CrkoeLe0x/omfzMqvlL6km61KxTB6PS+uzmkvxqE/dQiq32n0HCPLUP7lveUUclomFzNIR3CO6+/tA2i1q3Nkbkb9nz3BofY7Wqve5DABAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApiId/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ApiIdEndpoint2153A9CE": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ApiId3E3142C2"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiIdDeploymentStageprodF1084D67"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
