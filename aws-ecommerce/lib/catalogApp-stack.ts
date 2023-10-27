@@ -17,7 +17,7 @@ export class CatalogAppStack extends cdk.Stack {
             memorySize: 128,
             timeout: cdk.Duration.seconds(19),
             bundling: {
-                minify: false,
+                minify: true,
                 sourceMap: false
             },
         })
