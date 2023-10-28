@@ -1,4 +1,10 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult, Context} from "aws-lambda"
+import {CatalogRepository} from "/opt/nodejs/catalogLayer";
+import {DynamoDB} from "aws-sdk";
+
+const catalogDdb = process.env.CATALOG_DDB!
+const ddbClient = new DynamoDB.DocumentClient()
+const catalogReporisory = new CatalogRepository(ddbClient, catalogDdb)
 
 export async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult>{
 
@@ -12,19 +18,28 @@ export async function handler(event: APIGatewayProxyEvent, context: Context): Pr
         if(method === "GET"){
             console.log('GET')
 
+            const catalogItems = await catalogReporisory.getAllCatalogItem()
             return {
                 statusCode: 200,
-                body: JSON.stringify({
-                    message: "GET Catalog - OK"
-                })
+                body: JSON.stringify(catalogItems)
             }
         }
     } else if (event.resource === "/catalog/{id}"){
         const catalogId = event.pathParameters!.id as string
         console.log(`GET /catalog/${catalogId}`)
-        return {
-            statusCode: 200,
-            body: `GET /catalog/${catalogId}`
+
+        try{
+            const catalogItem = await catalogReporisory.getCatalogItemById(catalogId)
+            return {
+                statusCode: 200,
+                body: JSON.stringify(catalogItem)
+            }
+        } catch (error) {
+            console.error((<Error>error).message)
+            return {
+                statusCode: 404,
+                body: (<Error>error).message
+            }
         }
     }
 
