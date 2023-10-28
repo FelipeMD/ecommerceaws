@@ -16,12 +16,12 @@ const tags = {
     team: "Felipe Souza"
 }
 
-const catalogAppStack = new CatalogAppStack(app, "CatalogFetchFunctionId", {
+const catalogAppStack = new CatalogAppStack(app, "CatalogApp", {
     tags: tags,
     env: env
 })
 
-const eCommerceApiStack = new ApiStack(app, "ApiId", {
+const eCommerceApiStack = new ApiStack(app, "CatalogApi", {
     catalogFetchHandler: catalogAppStack.catalogFetchHandler,
     catalogAdminHandler: catalogAppStack.catalogAdminHandler,
     tags: tags,
