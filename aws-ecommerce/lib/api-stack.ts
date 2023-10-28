@@ -6,6 +6,7 @@ import { Construct } from "constructs"
 
 interface ApiStackProps extends  cdk.StackProps{
     catalogFetchHandler: lambdaNodeJS.NodejsFunction
+    catalogAdminHandler: lambdaNodeJS.NodejsFunction
 }
 export class ApiStack extends cdk.Stack{
     constructor(scope: Construct, id: string, props: ApiStackProps) {
@@ -35,5 +36,16 @@ export class ApiStack extends cdk.Stack{
 
         const catalogResource = api.root.addResource("catalog")
         catalogResource.addMethod("GET", catalogFetchHandlerIntegration)
+
+        const catalogIdResource = catalogResource.addResource("{id}")
+        catalogIdResource.addMethod("GET", catalogFetchHandlerIntegration)
+
+        const catalogAdminIntegration = new apigateway.LambdaIntegration(props.catalogAdminHandler)
+
+        catalogResource.addMethod("POST", catalogAdminIntegration)
+
+        catalogIdResource.addMethod("PUT", catalogAdminIntegration)
+
+        catalogIdResource.addMethod("DELETE", catalogAdminIntegration)
     }
 }

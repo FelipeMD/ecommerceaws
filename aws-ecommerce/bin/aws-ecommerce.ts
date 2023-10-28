@@ -23,6 +23,7 @@ const catalogAppStack = new CatalogAppStack(app, "CatalogFetchFunctionId", {
 
 const eCommerceApiStack = new ApiStack(app, "ApiId", {
     catalogFetchHandler: catalogAppStack.catalogFetchHandler,
+    catalogAdminHandler: catalogAppStack.catalogAdminHandler,
     tags: tags,
     env: env
 })
