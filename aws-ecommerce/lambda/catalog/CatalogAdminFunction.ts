@@ -100,6 +100,6 @@ function sendProductEvent(product: Catalog,
     return lambdaClient.invoke({
         FunctionName: catalogEventsFunctionName,
         Payload: JSON.stringify(event),
-        InvocationType: "RequestResponse"
+        InvocationType: "Event"
     }).promise()
 }

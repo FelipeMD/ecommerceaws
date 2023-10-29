@@ -30,7 +30,7 @@ function createEvent(event: CatalogEvent) {
     return ddbClient.put({
         TableName: eventsDdb,
         Item: {
-            pk: `#catalog_${event.productCode}`,
+            pk: `#catalogItem_${event.productCode}`,
             sk: `${event.eventType}#${timestamp}`, //CATALOG_CREATED#123465
             email: event.email,
             createdAt: timestamp,
