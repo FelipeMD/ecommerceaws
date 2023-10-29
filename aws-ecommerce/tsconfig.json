@@ -27,6 +27,9 @@
     "paths": {
       "/opt/nodejs/catalogLayer": [
         "lambda/catalog/layers/catalogLayer/nodejs/catalogRepository"
+      ],
+      "/opt/nodejs/catalogEventsLayer": [
+        "lambda/catalog/layers/catalogEventsLayer/nodejs/catalogEvent"
       ]
     }
   },

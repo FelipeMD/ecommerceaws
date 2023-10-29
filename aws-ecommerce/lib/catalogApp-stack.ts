@@ -9,6 +9,9 @@ import {BillingMode} from "aws-cdk-lib/aws-dynamodb"
 import {Construct} from "constructs"
 import {Runtime} from "aws-cdk-lib/aws-lambda";
 
+interface catalogAppStackProps extends cdk.StackProps {
+    eventsDdb: dynamodb.Table
+}
 export class CatalogAppStack extends cdk.Stack {
 
     readonly catalogFetchHandler: lambdaNodeJs.NodejsFunction
@@ -16,7 +19,7 @@ export class CatalogAppStack extends cdk.Stack {
     readonly catalogDdb: dynamodb.Table
 
 
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props: catalogAppStackProps) {
         super(scope, id, props);
 
         this.catalogDdb = new dynamodb.Table(this, "CatalogDdb", {
@@ -33,6 +36,29 @@ export class CatalogAppStack extends cdk.Stack {
 
         const catalogLayerArn = ssm.StringParameter.valueForStringParameter(this, "CatalogLayerVersionArn")
         const catalogLayer = lambda.LayerVersion.fromLayerVersionArn(this, "CatalogLayerVersionArn", catalogLayerArn)
+
+        const catalogEventsLayerArn = ssm.StringParameter.valueForStringParameter(this, "CatalogEventsLayerVersionArn")
+        const catalogEventsLayer = lambda.LayerVersion.fromLayerVersionArn(this, "CatalogEventsLayerVersionArn", catalogEventsLayerArn)
+
+        const catalogEventsHandler = new lambdaNodeJs.NodejsFunction(this, "CatalogEventsFunction", {
+            functionName: "CatalogEventsFunction",
+            entry: "lambda/catalog/CatalogEventsFunction.ts",
+            handler: "handler",
+            memorySize: 128,
+            runtime: Runtime.NODEJS_16_X,
+            timeout: cdk.Duration.seconds(10),
+            bundling: {
+                minify: true,
+                sourceMap: false
+            },
+            environment: {
+                EVENTS_DDB: props.eventsDdb.tableName
+            },
+            layers: [catalogEventsLayer],
+            tracing: lambda.Tracing.ACTIVE,
+            insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_229_0
+        })
+        props.eventsDdb.grantWriteData(catalogEventsHandler)
 
         this.catalogFetchHandler = new lambdaNodeJs.NodejsFunction(this, "CatalogFetchFunction", {
             functionName: "CatalogFetchFunction",
@@ -66,12 +92,14 @@ export class CatalogAppStack extends cdk.Stack {
                 sourceMap: false
             },
             environment: {
-                CATALOG_DDB: this.catalogDdb.tableName
+                CATALOG_DDB: this.catalogDdb.tableName,
+                CATALOG_EVENTS_FUNCTION_NAME: catalogEventsHandler.functionName
             },
-            layers: [catalogLayer],
+            layers: [catalogLayer, catalogEventsLayer],
             tracing: lambda.Tracing.ACTIVE,
             insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_229_0
         })
         this.catalogDdb.grantWriteData(this.catalogAdminHandler)
+        catalogEventsHandler.grantInvoke(this.catalogAdminHandler)
     }
 }
