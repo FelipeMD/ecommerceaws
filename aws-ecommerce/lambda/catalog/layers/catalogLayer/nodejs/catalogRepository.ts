@@ -7,6 +7,7 @@ export interface Catalog {
     code: string;
     price: number;
     model: string;
+    productUrl: string;
 }
 
 export class CatalogRepository {
@@ -71,12 +72,13 @@ export class CatalogRepository {
             },
             ConditionExpression: 'attribute_exists(id)',
             ReturnValues: "UPDATED_NEW",
-            UpdateExpression: "set productName = :n, code = :c, price = :p, model = :m",
+            UpdateExpression: "set productName = :n, code = :c, price = :p, model = :m, productUrl = :u",
             ExpressionAttributeValues: {
                 ":n": catalog.productName,
                 ":c": catalog.code,
                 ":p": catalog.price,
-                ":m": catalog.model
+                ":m": catalog.model,
+                ":u": catalog.productUrl
             }
         }).promise()
         data.Attributes!.id = catalogItemId

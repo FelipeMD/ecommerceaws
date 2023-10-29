@@ -48,7 +48,9 @@ export class CatalogAppStack extends cdk.Stack {
             environment: {
                 CATALOG_DDB: this.catalogDdb.tableName
             },
-            layers: [catalogLayer]
+            layers: [catalogLayer],
+            tracing: lambda.Tracing.ACTIVE,
+            insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_229_0
         })
         this.catalogDdb.grantReadData(this.catalogFetchHandler)
 
@@ -66,7 +68,9 @@ export class CatalogAppStack extends cdk.Stack {
             environment: {
                 CATALOG_DDB: this.catalogDdb.tableName
             },
-            layers: [catalogLayer]
+            layers: [catalogLayer],
+            tracing: lambda.Tracing.ACTIVE,
+            insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_229_0
         })
         this.catalogDdb.grantWriteData(this.catalogAdminHandler)
     }

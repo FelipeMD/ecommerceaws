@@ -1,7 +1,9 @@
 import {APIGatewayProxyEvent, APIGatewayProxyResult, Context} from "aws-lambda"
 import {Catalog, CatalogRepository} from "/opt/nodejs/catalogLayer";
 import {DynamoDB} from "aws-sdk";
+import * as AWSXRay from "aws-xray-sdk"
 
+AWSXRay.captureAWS(require("aws-sdk"))
 const catalogDdb = process.env.CATALOG_DDB!
 const ddbClient = new DynamoDB.DocumentClient()
 const catalogReporisory = new CatalogRepository(ddbClient, catalogDdb)
